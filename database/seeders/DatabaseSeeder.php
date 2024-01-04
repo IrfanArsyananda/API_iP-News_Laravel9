@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
@@ -18,9 +19,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $now = new \DateTime();
+        // $now = new \DateTime();
+        $now = Carbon::now();
+        $unique_code = $now->format('ymdhis');
 
         DB::table('users')->insert([
+            // 'id' => "1" . $unique_code,
             'email' => "superadmin@gmail.com",
             'username' => "superadmin",
             'password' => md5('superadmin'),
@@ -29,6 +33,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => $now,
         ]);
         DB::table('users')->insert([
+            // 'id' => "2" . $unique_code,
             'email' => "admin@gmail.com",
             'username' => "admin",
             'password' => md5('admin'),
@@ -41,7 +46,7 @@ class DatabaseSeeder extends Seeder
             $randTitle = $faker->text(10);
             DB::table('posts')->insert([
                 'title' => $randTitle,
-                'slug' => Str::slug($randTitle),
+                'slug' => $unique_code . "-" . Str::slug($randTitle),
                 'content' => $faker->text(100),
                 'author' => rand(1, 2),
                 'created_at' => $now,
