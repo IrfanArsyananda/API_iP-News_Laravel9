@@ -1,0 +1,375 @@
+{
+	"info": {
+		"_postman_id": "44fd8cb7-8b8a-43bb-ad90-126eefda4efa",
+		"name": "API_iP-News",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30662094"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const {success, messages} = JSON.parse(responseBody);\r",
+							"const token = JSON.parse(responseBody)[\"data\"][\"token\"];\r",
+							"if (success){\r",
+							"    postman.setEnvironmentVariable(\"token\", token)\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "superadmin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "superadmin",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{xampp}}/login",
+					"host": [
+						"{{xampp}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read User Detail (Me)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const {success} = JSON.parse(responseBody);\r",
+							"const id = JSON.parse(responseBody)[\"data\"][\"id\"];\r",
+							"if (success){\r",
+							"    postman.setEnvironmentVariable(\"user\", id);\r",
+							"}\r",
+							"// console.log(id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{xampp}}/me",
+					"host": [
+						"{{xampp}}"
+					],
+					"path": [
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{xampp}}/logout",
+					"host": [
+						"{{xampp}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const {success, messages} = JSON.parse(responseBody);\r",
+							"const slug = JSON.parse(responseBody)[\"data\"][\"slug\"];\r",
+							"const id = JSON.parse(responseBody)[\"data\"][\"id\"];\r",
+							"if (success){\r",
+							"    postman.setEnvironmentVariable(\"slug\", slug)\r",
+							"    postman.setEnvironmentVariable(\"post\", id)\r",
+							"}\r",
+							"// console.log(slug);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "Yuhuu~",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "Yuhuu Content~",
+							"type": "text"
+						},
+						{
+							"key": "author",
+							"value": "{{user}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{xampp}}/posts",
+					"host": [
+						"{{xampp}}"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read Post List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{xampp}}/posts",
+					"host": [
+						"{{xampp}}"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read Post Detail",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{xampp}}/posts/{{slug}}",
+					"host": [
+						"{{xampp}}"
+					],
+					"path": [
+						"posts",
+						"{{slug}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const {success, messages} = JSON.parse(responseBody);\r",
+							"const slug = JSON.parse(responseBody)[\"data\"][\"slug\"];\r",
+							"if (success){\r",
+							"    postman.setEnvironmentVariable(\"slug\", slug)\r",
+							"}\r",
+							"// console.log(slug);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "Yuhuu Updated Title {{token}}",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "Yuhuu Updated Content {{token}}",
+							"type": "text"
+						},
+						{
+							"key": "author",
+							"value": "{{user}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{xampp}}/posts/{{post}}",
+					"host": [
+						"{{xampp}}"
+					],
+					"path": [
+						"posts",
+						"{{post}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Post",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "author",
+							"value": "{{user}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{xampp}}/posts/{{post}}",
+					"host": [
+						"{{xampp}}"
+					],
+					"path": [
+						"posts",
+						"{{post}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
