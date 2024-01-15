@@ -11,3 +11,12 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }
+
+function show_response_json($isSuc, $msg, $data)
+{
+    return response()->json([
+        'success' => $isSuc,
+        'messages' => $msg,
+        'data' => $data
+    ]);
+}
