@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('writer:id,fullname,email')->get();
+        $posts = Post::with(['writer:id,fullname,email', 'comments:id,post_id,user_id,content'])->get();
         if (!$posts) {
             return show_response_json(false, "Data not found!", []);;
         }
@@ -59,7 +59,7 @@ class PostController extends Controller
      */
     public function show($slug)
     {
-        $post = Post::with('writer:id,fullname,email')->where('slug', $slug)->first();
+        $post = Post::with(['writer:id,fullname,email', 'comments:id,post_id,user_id,content'])->where('slug', $slug)->first();
         // $post = Post::findPostBySlug($slug);
         if (!$post) {
             return show_response_json(false, "Data not found!", []);;

@@ -41,6 +41,15 @@ class DatabaseSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
         ]);
+        DB::table('users')->insert([
+            // 'id' => "2" . $unique_code,
+            'email' => "user@gmail.com",
+            'username' => "user",
+            'password' => md5('user'),
+            'fullname' => "User",
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
 
         for ($i = 1; $i <= 5; $i++) {
             $randTitle = $faker->text(10);
@@ -48,7 +57,7 @@ class DatabaseSeeder extends Seeder
                 'title' => $randTitle,
                 'slug' => $unique_code . "-" . Str::slug($randTitle),
                 'content' => $faker->text(100),
-                'author' => rand(1, 2),
+                'author' => rand(1, 3),
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);
@@ -57,7 +66,7 @@ class DatabaseSeeder extends Seeder
         for ($i = 1; $i <= 20; $i++) {
             DB::table('comments')->insert([
                 'post_id' => rand(1, 5),
-                'user_id' => rand(1, 2),
+                'user_id' => rand(1, 3),
                 'content' => $faker->text(),
                 'created_at' => $now,
                 'updated_at' => $now,

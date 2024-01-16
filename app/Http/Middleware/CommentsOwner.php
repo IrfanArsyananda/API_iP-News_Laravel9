@@ -2,14 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Comment;
 use Closure;
-use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
 use function App\Http\Controllers\show_response_json;
 
-class PostsOwner
+class CommentsOwner
 {
     /**
      * Handle an incoming request.
@@ -20,14 +18,11 @@ class PostsOwner
      */
     public function handle(Request $request, Closure $next)
     {
-        // $currentUserId = Auth::user()->id; // User by token laravel
-        $currentUserId = $request->author; // User by request body
-        $currentPostId = Post::findOrFail($request->id); // Post by id parameter
-        if ($currentPostId->author != $currentUserId) {
-            return show_response_json(false, "Post isn't yours!", []);
+        $currentUserId = $request->user_id; // User by request body
+        $currentCommentId = Comment::findOrFail($request->id); // Post by id parameter
+        if ($currentCommentId->user_id != $currentUserId) {
+            return show_response_json(false, "Comment isn't yours!", []);
         }
-        // return show_response_json(true, "Post is yours!", []);
-
         return $next($request);
     }
 }
