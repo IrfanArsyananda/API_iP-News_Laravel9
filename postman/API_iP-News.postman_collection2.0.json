@@ -18,8 +18,10 @@
 								"exec": [
 									"const {success, messages} = JSON.parse(responseBody);\r",
 									"const token = JSON.parse(responseBody)[\"data\"][\"token\"];\r",
+									"const id = JSON.parse(responseBody)[\"data\"][\"user\"][\"id\"];\r",
 									"if (success){\r",
 									"    postman.setEnvironmentVariable(\"token\", token)\r",
+									"    postman.setEnvironmentVariable(\"userId\", id);\r",
 									"}"
 								],
 								"type": "text/javascript"
@@ -40,12 +42,12 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "superadmin",
+									"value": "admin",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "superadmin",
+									"value": "admin",
 									"type": "text"
 								}
 							]
@@ -125,9 +127,11 @@
 									"const {success, messages} = JSON.parse(responseBody);\r",
 									"const slug = JSON.parse(responseBody)[\"data\"][\"slug\"];\r",
 									"const id = JSON.parse(responseBody)[\"data\"][\"id\"];\r",
+									"const img = JSON.parse(responseBody)[\"data\"][\"image\"];\r",
 									"if (success){\r",
 									"    postman.setEnvironmentVariable(\"slug\", slug)\r",
 									"    postman.setEnvironmentVariable(\"postId\", id)\r",
+									"    postman.setEnvironmentVariable(\"img\", img)\r",
 									"}\r",
 									"// console.log(slug);"
 								],
@@ -150,8 +154,8 @@
 							}
 						],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
+							"mode": "formdata",
+							"formdata": [
 								{
 									"key": "title",
 									"value": "Yuhuu~",
@@ -166,6 +170,11 @@
 									"key": "author",
 									"value": "{{userId}}",
 									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/USER/Pictures/toonmecom_aff57a.png"
 								}
 							]
 						},
@@ -235,8 +244,10 @@
 								"exec": [
 									"const {success, messages} = JSON.parse(responseBody);\r",
 									"const slug = JSON.parse(responseBody)[\"data\"][\"slug\"];\r",
+									"const img = JSON.parse(responseBody)[\"data\"][\"image\"];\r",
 									"if (success){\r",
 									"    postman.setEnvironmentVariable(\"slug\", slug)\r",
+									"    postman.setEnvironmentVariable(\"img\", img)\r",
 									"}\r",
 									"// console.log(slug);"
 								],
@@ -245,7 +256,7 @@
 						}
 					],
 					"request": {
-						"method": "PATCH",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
@@ -259,8 +270,8 @@
 							}
 						],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
+							"mode": "formdata",
+							"formdata": [
 								{
 									"key": "title",
 									"value": "Yuhuu Updated Title {{token}}",
@@ -275,6 +286,16 @@
 									"key": "author",
 									"value": "{{userId}}",
 									"type": "text"
+								},
+								{
+									"key": "old_file_name",
+									"value": "{{img}}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/USER/Downloads/Mini ATM for Koperasi.png"
 								}
 							]
 						},
