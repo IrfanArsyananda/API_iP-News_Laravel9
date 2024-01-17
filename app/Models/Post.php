@@ -14,7 +14,7 @@ class Post extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'posts';
-    protected $fillable = ['title', 'slug', 'content', 'author'];
+    protected $fillable = ['title', 'slug', 'content', 'author', 'image'];
 
     public static function findPostBySlug($slug)
     {

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PostResource;
-use App\Http\Resources\PostDetailResource;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use App\Models\Post;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Http\Resources\PostResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\PostDetailResource;
 
 class PostController extends Controller
 {
@@ -33,16 +34,32 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->file);
         $validated = $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
-            'author' => 'required'
+            'author' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         if (!$validated) {
             return show_response_json(false, "Create post failed!", []);
         }
+        $imageName = null;
+        // if ($request->file) {
+        //     $fileName = ;
+        //     $extensions = $request->file;
+        //     $imageName = $fileName . '.' . $extensions;
+        //     $path = Storage::putFileAs('images', $request->file, $imageName);
+        // }
+        if ($image = $request->file('file')) {
+            $destinationPath = 'images/';
+            $imageName = md5(unique_code()) . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $imageName);
+        }
+
         $post = Post::create([
             'title' => $request->title,
+            'image' => $imageName,
             'slug' => unique_code() . "-" . Str::slug($request->title),
             'content' => $request->content,
             'author' => $request->author,
@@ -82,9 +99,18 @@ class PostController extends Controller
             'author' => 'required'
         ]);
 
+        $imageName = $request->old_file_name;
+        if ($image = $request->file('file')) {
+            $destinationPath = 'images/';
+            $imageName = md5(unique_code()) . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $imageName);
+            unlink('images/' . $request->old_file_name);
+        }
+
         $post = Post::findOrFail($id);
         $post->update([
             'title' => $request->title,
+            'image' => $imageName,
             'slug' => unique_code() . "-" . Str::slug($request->title),
             'content' => $request->content,
         ]);
@@ -102,8 +128,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
+
         $post = Post::findOrFail($id);
+        $fileName = $post->image;
         $post->delete();
-        return show_response_json(true, "Delete post success!", []);
+        unlink('images/' . $fileName);
+        return show_response_json(true, "Delete post success!", $fileName);
     }
 }

@@ -24,7 +24,7 @@ class PostsOwner
         $currentUserId = $request->author; // User by request body
         $currentPostId = Post::findOrFail($request->id); // Post by id parameter
         if ($currentPostId->author != $currentUserId) {
-            return show_response_json(false, "Post isn't yours!", []);
+            return show_response_json(false, "Post isn't yours!", ["post_user" => $currentPostId->author, "id_user" => $currentUserId]);
         }
         // return show_response_json(true, "Post is yours!", []);
 

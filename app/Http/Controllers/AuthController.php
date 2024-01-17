@@ -27,7 +27,7 @@ class AuthController extends Controller
 
         $tkn = $user->createToken('login_token')->plainTextToken;
 
-        return show_response_json(true, "Login success!", ['token' => $tkn]);
+        return show_response_json(true, "Login success!", ['token' => $tkn, "user" => $user]);
     }
 
     public function logout(Request $request)

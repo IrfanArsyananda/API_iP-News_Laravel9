@@ -25,5 +25,5 @@ function show_response_json($isSuc, $msg, $data)
 function unique_code()
 {
     $now = Carbon::now();
-    return $now->format('ymdhis');
+    return $now->format('YmdHis');
 }

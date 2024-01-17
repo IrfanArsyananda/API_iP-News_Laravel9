@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             DB::table('comments')->insert([
                 'post_id' => rand(1, 5),
                 'user_id' => rand(1, 3),
